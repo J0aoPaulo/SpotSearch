@@ -15,6 +15,6 @@ public class SpotSearchApplication implements CommandLineRunner {
 	@Override
 	public void run(String... Args) {
 		UserInterface userInterface = new UserInterface();
-		userInterface.getDados();
+		userInterface.menu();
 	}
 }
