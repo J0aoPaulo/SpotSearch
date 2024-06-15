@@ -3,12 +3,15 @@ package com.J0aoPaulo.SpotSearch.ui;
 import com.J0aoPaulo.SpotSearch.model.Album;
 import com.J0aoPaulo.SpotSearch.model.Artista;
 import com.J0aoPaulo.SpotSearch.model.Musica;
+import com.J0aoPaulo.SpotSearch.model.TopMusica;
 import com.J0aoPaulo.SpotSearch.model.record.Albuns;
 import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
+import com.J0aoPaulo.SpotSearch.model.record.Musicas;
 import com.J0aoPaulo.SpotSearch.repository.ArtistaRepository;
 import com.J0aoPaulo.SpotSearch.service.ConsumoApi;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UserMenu {
@@ -22,13 +25,12 @@ public class UserMenu {
     }
 
     private enum OpcaoMenu {
-        SAIR, BUSCAR_TOP_20, LISTAR_ALBUNS
+        SAIR, LISTAR_ALBUNS
     }
 
-    public void menu() {
+    public void menu(String nomeArtista) {
         var menu = """
-                    1 - Buscar top 20 músicas
-                    2 - Listar album do artista
+                    1 - Listar albuns do artista
                     0 - Sair                                \s
                    \s""";
 
@@ -47,35 +49,58 @@ public class UserMenu {
             if (opcao == OpcaoMenu.SAIR) {
                 break;
             }
-
-            System.out.print("Digite o nome do artista no qual deseja essas informações: ");
-            String nomeArtista = input.nextLine();
             realizarAcao(opcao, nomeArtista);
         }
     }
 
-    private void realizarAcao(OpcaoMenu opcao, String nomeArtista) {
+    private void putDadosTopMusicas(Artista artista, String nomeArtista) {
+        List<DadosTopMusicas> dadosTopMusicas = consumoApi.getArtistTopTrack(nomeArtista);
+        List<TopMusica> topMusicas = dadosTopMusicas.stream()
+                .flatMap(m -> m.nomesTopMusicas().stream())
+                .map(TopMusica::new)
+                .toList();
+        artista.setTopMusicas(topMusicas);
+    }
+
+    private void putDadosAlbuns(Artista artista, String nomeArtista) {
+        List<Albuns> albuns = consumoApi.getAlbuns(nomeArtista);
+        List<Album> albumDados = albuns.stream()
+                .flatMap(t -> t.albunsInfo().stream())
+                .map(Album::new)
+                .toList();
+        artista.setAlbums(albumDados);
+    }
+
+    private void putDadosMusicas(Artista artista, String nomeArtista) {
+        List<Musicas> musicasDados = consumoApi.getMusicas(nomeArtista);
+        List<Musica> musicas = musicasDados.stream()
+                .flatMap(d -> d.musicas().stream())
+                .map(Musica::new)
+                .toList();
+        artista.setMusicas(musicas);
+    }
+
+    public void getDadosArtista(String nomeArtista) {
         final String artistNameApi = consumoApi.getArtistBase(nomeArtista).getFirst().nome();
         Artista artista = new Artista(artistNameApi);
 
+        putDadosTopMusicas(artista, artistNameApi);
+        putDadosAlbuns(artista, artistNameApi);
+        putDadosMusicas(artista, artistNameApi);
+
+        repository.save(artista);
+    }
+
+    private void realizarAcao(OpcaoMenu opcao, String nomeArtista) {
         switch (opcao) {
-            case BUSCAR_TOP_20:
-                List<DadosTopMusicas> dadosTopMusicas = consumoApi.getArtistTopTrack(nomeArtista);
-                List<Musica> topMusicas = dadosTopMusicas.stream()
-                        .flatMap(m -> m.nomesTopMusicas().stream())
-                        .map(t -> new Musica(t.name()))
-                        .toList();
-                artista.setTopMusicas(topMusicas);
-                repository.save(artista);
-                break;
             case LISTAR_ALBUNS:
-                List<Albuns> albuns = consumoApi.getAlbuns(nomeArtista);
-                List<Album> albumDados = albuns.stream()
-                        .flatMap(t -> t.albunsInfo().stream())
-                        .map(a -> new Album(a))
-                        .toList();
-                artista.setAlbums(albumDados);
-                repository.save(artista);
+                Optional<List <Album>> albuns = repository.findAllAlbumsByArtistNameIgnoreCase(nomeArtista);
+                albuns.ifPresentOrElse(
+                        values -> values.forEach(a -> System.out.println(a.getNomeAlbum())),
+                        () -> System.out.println("Nenhum album encontrado para esse artista"));
+                break;
+            case SAIR:
+                break;
             default:
                 System.out.println("Opção inválida, digite novamente");
                 break;

@@ -4,7 +4,7 @@ import com.J0aoPaulo.SpotSearch.model.record.AlbumDados;
 import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name = "albuns")
 public class Album {
 
     @Id
@@ -24,6 +24,9 @@ public class Album {
     @Column(name = "faixas_totais")
     private int totalFaixas;
 
+    public Album() {
+
+    }
 
     public Album(AlbumDados album) {
         this.nomeAlbum = album.nome();

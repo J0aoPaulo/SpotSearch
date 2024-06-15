@@ -1,5 +1,6 @@
 package com.J0aoPaulo.SpotSearch.model;
 
+import com.J0aoPaulo.SpotSearch.model.record.MusicaDados;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,17 +9,27 @@ public class Musica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_top_musicas")
     private Long id;
 
     @ManyToOne
-    private Artista artista;
+    Artista artista;
 
-    @Column(name = "_musica")
     private String nome;
 
-    public Musica(String nomeTopMusica) {
-        this.nome = nomeTopMusica;
+    public Musica(MusicaDados musicaDados) {
+        this.nome = musicaDados.nomeMusica();
+    }
+
+    public Musica() {
+
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Artista getArtista() {
@@ -29,11 +40,8 @@ public class Musica {
         this.artista = artista;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    @Override
+    public String toString() {
+        return "nome='" + nome + '\'';
     }
 }

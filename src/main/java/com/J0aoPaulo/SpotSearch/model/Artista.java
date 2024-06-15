@@ -17,13 +17,20 @@ public class Artista {
     String nome;
 
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
-    List<Musica> topMusicas = new ArrayList<>();
+    List<TopMusica> topMusicas = new ArrayList<>();
 
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
-    List<Album> albums = new ArrayList<>();
+    List<Musica> musicas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
+    List<Album> albuns = new ArrayList<>();
 
     public Artista(String nome) {
         this.nome = nome;
+    }
+
+    public Artista() {
+
     }
 
     public String getNome() {
@@ -34,22 +41,31 @@ public class Artista {
         this.nome = nome;
     }
 
-    public List<Musica> getTopMusicas() {
+    public List<TopMusica> getTopMusicas() {
         return topMusicas;
     }
 
-    public void setTopMusicas(List<Musica> topMusicas) {
+    public void setTopMusicas(List<TopMusica> topMusicas) {
         topMusicas.forEach(m -> m.setArtista(this));
         this.topMusicas = topMusicas;
     }
 
     public List<Album> getAlbums() {
-        return albums;
+        return albuns;
     }
 
     public void setAlbums(List<Album> albums) {
         albums.forEach(a -> a.setArtista(this));
-        this.albums = albums;
+        this.albuns = albums;
+    }
+
+    public List<Musica> getMusicas() {
+        return musicas;
+    }
+
+    public void setMusicas(List<Musica> musicas) {
+        musicas.forEach(m -> m.setArtista(this));
+        this.musicas = musicas;
     }
 
     @Override

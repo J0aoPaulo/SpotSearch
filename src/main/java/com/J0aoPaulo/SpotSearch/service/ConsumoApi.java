@@ -1,9 +1,6 @@
 package com.J0aoPaulo.SpotSearch.service;
 
-import com.J0aoPaulo.SpotSearch.model.record.Albuns;
-import com.J0aoPaulo.SpotSearch.model.record.Artistas;
-import com.J0aoPaulo.SpotSearch.model.record.DadosArtista;
-import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
+import com.J0aoPaulo.SpotSearch.model.record.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -65,5 +62,21 @@ public class ConsumoApi {
         albuns.add(dadosMapeados.obterDados(apiResquest(BASE_URL + dadosArtistas.getFirst().id()
                 + "/albums"), Albuns.class));
         return albuns;
+    }
+
+    public List<Musicas> getMusicas(String artistName) {
+        List<Albuns> albuns = getAlbuns(artistName);
+        List<Musicas> musicaDados = new ArrayList<>();
+        List<String> albunsIds = albuns.stream()
+                .flatMap(album -> album.albunsInfo().stream())
+                .map(AlbumDados::albumId)
+                .limit(20)
+                .toList();
+        for (String idAlbum : albunsIds) {
+            musicaDados.add(dadosMapeados.obterDados(
+                    apiResquest("https://api.spotify.com/v1/albums/" + idAlbum
+                            + "/tracks?limit=50"), Musicas.class));
+        }
+        return musicaDados;
     }
 }
