@@ -22,7 +22,7 @@ public class Album {
     private String tipoAlbum;
 
     @Column(name = "faixas_totais")
-    private int totalFaixas;
+    private Integer totalFaixas;
 
     public Album() {
 

@@ -22,6 +22,10 @@ public class TopMusica {
         this.nome = nomeTopMusica.name();
     }
 
+    public TopMusica() {
+
+    }
+
     public Artista getArtista() {
         return artista;
     }

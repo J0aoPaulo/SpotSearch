@@ -26,13 +26,17 @@ public class UserMenu {
     }
 
     private enum OpcaoMenu {
-        SAIR, LISTAR_ALBUNS, LISTAR_MUSICAS
+        SAIR,
+        LISTAR_ALBUNS,
+        LISTAR_MUSICAS,
+        LISTAR_MUSICAS_POPULARES
     }
 
     public void menu(String nomeArtista) {
         var menu = """
                     1 - Listar álbuns do artista
                     2 - Listar músicas do artista
+                    3 - Listar musicas mais populares
                     0 - Sair                                \s
                    \s""";
 
@@ -99,7 +103,7 @@ public class UserMenu {
                 Optional<List <Album>> albuns = repository.findAllAlbumsByArtistName(nomeArtista);
                 albuns.ifPresentOrElse(
                         values -> values.forEach(a -> System.out.println(a.getNomeAlbum())),
-                        () -> System.out.println("Nenhum album encontrado para esse artista")
+                        () -> System.out.println("Nenhum album de " + nomeArtista + "encontrado")
                 );
                 break;
             case LISTAR_MUSICAS:
@@ -107,7 +111,14 @@ public class UserMenu {
                         (nomeArtista, PageRequest.of(0 ,20));
                 musicas.ifPresentOrElse(
                         values -> values.forEach(m -> System.out.println(m.getNome())),
-                        () -> System.out.println("Nenhuma música encontrada para esse artista")
+                        () -> System.out.println("Nenhuma música de" + nomeArtista + "encontrada" )
+                );
+                break;
+            case LISTAR_MUSICAS_POPULARES:
+                Optional<List<TopMusica>> topMusicas = repository.findArtistTopMusics(nomeArtista);
+                topMusicas.ifPresentOrElse(
+                        values -> values.forEach(m -> System.out.println(m.getNome())),
+                        () -> System.out.println("Musicas mais populares não encontrado para " + nomeArtista)
                 );
                 break;
             case SAIR:
