@@ -1,4 +1,4 @@
-package com.J0aoPaulo.SpotSearch.model;
+package com.J0aoPaulo.SpotSearch.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,5 +6,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DadosMusicaArtista(@JsonProperty("tracks") List<NomeMusica> tracks) {}
-
+public record DadosTopMusicas(@JsonProperty("tracks") List<NomeTopMusica> nomesTopMusicas) {}

@@ -1,10 +1,50 @@
 package com.J0aoPaulo.SpotSearch.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record Artista(@JsonProperty("items") List<DadosArtista> items) {
+@Entity
+@Table(name = "artistas")
+public class Artista {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "nome_artista")
+    String nome;
+
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
+    List<Musica> topMusicas = new ArrayList<>();
+
+    public Artista(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public List<Musica> getTopMusicas() {
+        return topMusicas;
+    }
+
+    public void setTopMusicas(List<Musica> topMusicas) {
+        topMusicas.forEach(m -> m.setArtista(this));
+        this.topMusicas = topMusicas;
+    }
+
+    @Override
+    public String toString() {
+        return "Artista{" +
+                "nomeArtista='" + nome + '\'' +
+                ", topMusicas=" + topMusicas +
+                '}';
+    }
 }

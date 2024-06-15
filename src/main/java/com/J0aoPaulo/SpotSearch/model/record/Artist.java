@@ -1,8 +1,10 @@
-package com.J0aoPaulo.SpotSearch.model;
+package com.J0aoPaulo.SpotSearch.model.record;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Artistas(@JsonProperty("artists") Artista artists) {
+public record Artist(@JsonProperty("items") List<DadosArtista> items) {
 }

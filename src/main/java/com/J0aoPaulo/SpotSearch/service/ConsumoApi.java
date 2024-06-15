@@ -1,13 +1,16 @@
 package com.J0aoPaulo.SpotSearch.service;
 
-import com.J0aoPaulo.SpotSearch.model.DadosMusicaArtista;
-import com.J0aoPaulo.SpotSearch.model.Artistas;
+import com.J0aoPaulo.SpotSearch.model.record.Artistas;
+import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConsumoApi {
 
@@ -42,11 +45,12 @@ public class ConsumoApi {
         return dadosArtistaId.artists().items().getFirst().id();
     }
 
-    public void getArtistTopTrack(String artistName) {
+    public List<DadosTopMusicas> getArtistTopTrack(String artistName) {
         String idArtist = getArtistId(artistName);
-        DadosMusicaArtista artistTopTrack = dadosMapeados.obterDados
+        List<DadosTopMusicas> artistTopTrack = new ArrayList<>();
+        artistTopTrack.add(dadosMapeados.obterDados
                 (apiResquest("https://api.spotify.com/v1/artists/" + idArtist + "/top-tracks")
-                        , DadosMusicaArtista.class);
-        artistTopTrack.tracks().forEach(t -> System.out.println(t.name()));
+                        , DadosTopMusicas.class));
+        return artistTopTrack;
     }
 }

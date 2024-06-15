@@ -1,13 +1,23 @@
 package com.J0aoPaulo.SpotSearch.ui;
 
+import com.J0aoPaulo.SpotSearch.model.Artista;
+import com.J0aoPaulo.SpotSearch.model.Musica;
+import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
+import com.J0aoPaulo.SpotSearch.repository.ArtistaRepository;
 import com.J0aoPaulo.SpotSearch.service.ConsumoApi;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
 
     private final Scanner input = new Scanner(System.in);
     private final ConsumoApi consumoApi = new ConsumoApi();
+    private final ArtistaRepository repository;
+
+    public UserInterface(ArtistaRepository artistaRepository) {
+        this.repository = artistaRepository;
+    }
 
     private enum OpcaoMenu {
         SAIR, BUSCAR_TOP_20
@@ -44,7 +54,14 @@ public class UserInterface {
     private void realizarAcao(OpcaoMenu opcao, String nomeArtista) {
         switch (opcao) {
             case BUSCAR_TOP_20:
-                consumoApi.getArtistTopTrack(nomeArtista);
+                List<DadosTopMusicas> dadosTopMusicas = consumoApi.getArtistTopTrack(nomeArtista);
+                List<Musica> topMusicas = dadosTopMusicas.stream()
+                        .flatMap(m -> m.nomesTopMusicas().stream())
+                        .map(t -> new Musica(t.name()))
+                        .toList();
+                Artista artista = new Artista(nomeArtista);
+                artista.setTopMusicas(topMusicas);
+                repository.save(artista);
                 break;
             default:
                 System.out.println("Opção inválida, digite novamente");
