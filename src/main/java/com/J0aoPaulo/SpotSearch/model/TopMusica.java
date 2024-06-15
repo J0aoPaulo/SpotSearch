@@ -15,7 +15,7 @@ public class TopMusica {
     @ManyToOne
     private Artista artista;
 
-    @Column(name = "musicas")
+    @Column(name = "nome_top_musicas")
     private String nome;
 
     public TopMusica(NomeTopMusica nomeTopMusica) {

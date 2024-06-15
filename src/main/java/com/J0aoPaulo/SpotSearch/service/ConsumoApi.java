@@ -43,9 +43,6 @@ public class ConsumoApi {
                         + URL_FILTER), Artistas.class);
         return dadosArtistaId.artists().items();
     }
-    public String getArtistId(List<DadosArtista> dadosArtistas) {
-        return dadosArtistas.getFirst().id();
-    }
 
     public List<DadosTopMusicas> getArtistTopTrack(String artistName) {
         List<DadosArtista> artistBase = getArtistBase(artistName);
@@ -70,7 +67,6 @@ public class ConsumoApi {
         List<String> albunsIds = albuns.stream()
                 .flatMap(album -> album.albunsInfo().stream())
                 .map(AlbumDados::albumId)
-                .limit(20)
                 .toList();
         for (String idAlbum : albunsIds) {
             musicaDados.add(dadosMapeados.obterDados(

@@ -9,6 +9,7 @@ import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
 import com.J0aoPaulo.SpotSearch.model.record.Musicas;
 import com.J0aoPaulo.SpotSearch.repository.ArtistaRepository;
 import com.J0aoPaulo.SpotSearch.service.ConsumoApi;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +26,13 @@ public class UserMenu {
     }
 
     private enum OpcaoMenu {
-        SAIR, LISTAR_ALBUNS
+        SAIR, LISTAR_ALBUNS, LISTAR_MUSICAS
     }
 
     public void menu(String nomeArtista) {
         var menu = """
-                    1 - Listar albuns do artista
+                    1 - Listar álbuns do artista
+                    2 - Listar músicas do artista
                     0 - Sair                                \s
                    \s""";
 
@@ -94,10 +96,19 @@ public class UserMenu {
     private void realizarAcao(OpcaoMenu opcao, String nomeArtista) {
         switch (opcao) {
             case LISTAR_ALBUNS:
-                Optional<List <Album>> albuns = repository.findAllAlbumsByArtistNameIgnoreCase(nomeArtista);
+                Optional<List <Album>> albuns = repository.findAllAlbumsByArtistName(nomeArtista);
                 albuns.ifPresentOrElse(
                         values -> values.forEach(a -> System.out.println(a.getNomeAlbum())),
-                        () -> System.out.println("Nenhum album encontrado para esse artista"));
+                        () -> System.out.println("Nenhum album encontrado para esse artista")
+                );
+                break;
+            case LISTAR_MUSICAS:
+                Optional<List<Musica>> musicas = repository.findAllTracksByArtistName
+                        (nomeArtista, PageRequest.of(0 ,20));
+                musicas.ifPresentOrElse(
+                        values -> values.forEach(m -> System.out.println(m.getNome())),
+                        () -> System.out.println("Nenhuma música encontrada para esse artista")
+                );
                 break;
             case SAIR:
                 break;

@@ -14,6 +14,7 @@ public class Musica {
     @ManyToOne
     Artista artista;
 
+    @Column(name = "nome_musica")
     private String nome;
 
     public Musica(MusicaDados musicaDados) {
