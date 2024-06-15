@@ -1,6 +1,8 @@
 package com.J0aoPaulo.SpotSearch.service;
 
+import com.J0aoPaulo.SpotSearch.model.record.Albuns;
 import com.J0aoPaulo.SpotSearch.model.record.Artistas;
+import com.J0aoPaulo.SpotSearch.model.record.DadosArtista;
 import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
 
 import java.io.IOException;
@@ -10,11 +12,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ConsumoApi {
 
     private final ConverteDados dadosMapeados = new ConverteDados();
+    private final String BASE_URL = "https://api.spotify.com/v1/artists/";
 
     String acessToken = System.getenv("ACESS_TOKEN");
     public String apiResquest(String endereco) {
@@ -36,21 +38,32 @@ public class ConsumoApi {
         return response.body();
     }
 
-    public String getArtistId(String artistName) {
-        String BASE_URL = "https://api.spotify.com/v1/search?q=";
+    public List<DadosArtista> getArtistBase(String artistName) {
+        String BASE_URL_ID = "https://api.spotify.com/v1/search?q=";
         String URL_FILTER = "&type=artist&market=US&limit=1";
         Artistas dadosArtistaId = dadosMapeados.obterDados
-                (apiResquest(BASE_URL + artistName.replace(" ", "+")
+                (apiResquest(BASE_URL_ID + artistName.replace(" ", "+")
                         + URL_FILTER), Artistas.class);
-        return dadosArtistaId.artists().items().getFirst().id();
+        return dadosArtistaId.artists().items();
+    }
+    public String getArtistId(List<DadosArtista> dadosArtistas) {
+        return dadosArtistas.getFirst().id();
     }
 
     public List<DadosTopMusicas> getArtistTopTrack(String artistName) {
-        String idArtist = getArtistId(artistName);
+        List<DadosArtista> artistBase = getArtistBase(artistName);
         List<DadosTopMusicas> artistTopTrack = new ArrayList<>();
         artistTopTrack.add(dadosMapeados.obterDados
-                (apiResquest("https://api.spotify.com/v1/artists/" + idArtist + "/top-tracks")
-                        , DadosTopMusicas.class));
+                (apiResquest(BASE_URL + artistBase.getFirst().id()
+                        + "/top-tracks"), DadosTopMusicas.class));
         return artistTopTrack;
+    }
+
+    public List<Albuns> getAlbuns(String artistName) {
+        List<DadosArtista> dadosArtistas = getArtistBase(artistName);
+        List<Albuns> albuns = new ArrayList<>();
+        albuns.add(dadosMapeados.obterDados(apiResquest(BASE_URL + dadosArtistas.getFirst().id()
+                + "/albums"), Albuns.class));
+        return albuns;
     }
 }

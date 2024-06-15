@@ -1,7 +1,9 @@
 package com.J0aoPaulo.SpotSearch.ui;
 
+import com.J0aoPaulo.SpotSearch.model.Album;
 import com.J0aoPaulo.SpotSearch.model.Artista;
 import com.J0aoPaulo.SpotSearch.model.Musica;
+import com.J0aoPaulo.SpotSearch.model.record.Albuns;
 import com.J0aoPaulo.SpotSearch.model.record.DadosTopMusicas;
 import com.J0aoPaulo.SpotSearch.repository.ArtistaRepository;
 import com.J0aoPaulo.SpotSearch.service.ConsumoApi;
@@ -9,23 +11,24 @@ import com.J0aoPaulo.SpotSearch.service.ConsumoApi;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserInterface {
+public class UserMenu {
 
     private final Scanner input = new Scanner(System.in);
     private final ConsumoApi consumoApi = new ConsumoApi();
     private final ArtistaRepository repository;
 
-    public UserInterface(ArtistaRepository artistaRepository) {
+    public UserMenu(ArtistaRepository artistaRepository) {
         this.repository = artistaRepository;
     }
 
     private enum OpcaoMenu {
-        SAIR, BUSCAR_TOP_20
+        SAIR, BUSCAR_TOP_20, LISTAR_ALBUNS
     }
 
     public void menu() {
         var menu = """
                     1 - Buscar top 20 músicas
+                    2 - Listar album do artista
                     0 - Sair                                \s
                    \s""";
 
@@ -52,6 +55,9 @@ public class UserInterface {
     }
 
     private void realizarAcao(OpcaoMenu opcao, String nomeArtista) {
+        final String artistNameApi = consumoApi.getArtistBase(nomeArtista).getFirst().nome();
+        Artista artista = new Artista(artistNameApi);
+
         switch (opcao) {
             case BUSCAR_TOP_20:
                 List<DadosTopMusicas> dadosTopMusicas = consumoApi.getArtistTopTrack(nomeArtista);
@@ -59,10 +65,17 @@ public class UserInterface {
                         .flatMap(m -> m.nomesTopMusicas().stream())
                         .map(t -> new Musica(t.name()))
                         .toList();
-                Artista artista = new Artista(nomeArtista);
                 artista.setTopMusicas(topMusicas);
                 repository.save(artista);
                 break;
+            case LISTAR_ALBUNS:
+                List<Albuns> albuns = consumoApi.getAlbuns(nomeArtista);
+                List<Album> albumDados = albuns.stream()
+                        .flatMap(t -> t.albunsInfo().stream())
+                        .map(a -> new Album(a))
+                        .toList();
+                artista.setAlbums(albumDados);
+                repository.save(artista);
             default:
                 System.out.println("Opção inválida, digite novamente");
                 break;

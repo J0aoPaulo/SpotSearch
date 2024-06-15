@@ -1,7 +1,7 @@
 package com.J0aoPaulo.SpotSearch;
 
 import com.J0aoPaulo.SpotSearch.repository.ArtistaRepository;
-import com.J0aoPaulo.SpotSearch.ui.UserInterface;
+import com.J0aoPaulo.SpotSearch.ui.UserMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ public class SpotSearchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... Args) {
-		UserInterface userInterface = new UserInterface(artistaRepository);
+		UserMenu userInterface = new UserMenu(artistaRepository);
 		userInterface.menu();
 	}
 }

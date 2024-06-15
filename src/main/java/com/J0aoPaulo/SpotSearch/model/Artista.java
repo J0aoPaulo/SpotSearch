@@ -19,6 +19,9 @@ public class Artista {
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
     List<Musica> topMusicas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
+    List<Album> albums = new ArrayList<>();
+
     public Artista(String nome) {
         this.nome = nome;
     }
@@ -38,6 +41,15 @@ public class Artista {
     public void setTopMusicas(List<Musica> topMusicas) {
         topMusicas.forEach(m -> m.setArtista(this));
         this.topMusicas = topMusicas;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        albums.forEach(a -> a.setArtista(this));
+        this.albums = albums;
     }
 
     @Override
