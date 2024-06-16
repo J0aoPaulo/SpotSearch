@@ -1,4 +1,4 @@
-**# SpotSearch
+# SpotSearch
 
 ## Configuração do projeto
 
