@@ -61,4 +61,4 @@ o estudo e prática de:
 - [x] Obter as músicas mais populares de um artista.
 - [x] Obter álbuns por tipo (Single, Album) específico.
 - [x] Obter álbuns de acordo com o número de faixas em ordem decrescente.
-- [x] Obter lista de artistas e álbuns.**
+- [x] Obter lista de artistas e álbuns.
