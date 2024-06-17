@@ -8,8 +8,8 @@
 
 ### API Configuration
 
-1.  Access[Spotify API documentation](https://developer.spotify.com/documentation/web-api/tutorials/getting-started).
-2.  Follow the first step and obtain the credentials`Client ID`e`Client Secret`.
+1.  Access [Spotify API documentation](https://developer.spotify.com/documentation/web-api/tutorials/getting-started).
+2.  Follow the first step and obtain the credentials `Client ID` e `Client Secret`.
 3.  Make a POST request to the endpoint below, which returns the API access token.
 4.  The access token lasts for 60 minutes.
 
@@ -20,22 +20,22 @@ curl -X POST "https://accounts.spotify.com/api/token" \
 ```
 
 5.  Now, with the access token in hand, feel free to make data requests for an artist, album or song. 
-    See this[documentation](https://developer.spotify.com/documentation/web-api/reference/search)for more information.
+    See this [documentation](https://developer.spotify.com/documentation/web-api/reference/search)for more information.
 
 #### Attention:
 
 -   These steps assume you have a Spotify account, whether free or paid.
--   The API call is made using cURL. Installation can be done through the[official site](https://curl.se/download.html)or from any package manager you select.
+-   The API call is made using cURL. Installation can be done through the [official site](https://curl.se/download.html) or from any package manager you select.
 -   It is recommended to insert the access token in the environment variables.
 
 ### Database configuration
 
-1.  Clone o repositório e mude para a sua pasta raiz.
+1. Clone the repository and change it to your root folder.
 
-
+```
     git clone https://github.com/J0aoPaulo/SpotSearch
     cd spotsearch
-
+```
 2.  Configure the PostgreSQL database with the following commands below:
 
 ```properties
@@ -49,7 +49,7 @@ spring.jpa.hibernate.ddl-auto=create
 ```
 
 3.  After the project is run for the first time and tables are created
-    change the attribute of`spring.jpa.hibernate.ddl-auto`of`create `for`update`.
+    change the attribute of `spring.jpa.hibernate.ddl-auto` of `create` for `update`.
 
 4.  Set the environment variables for the database credentials.
 
