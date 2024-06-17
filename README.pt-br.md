@@ -1,5 +1,7 @@
 # SpotSearch
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/J0aoPaulo/SpotSearch/blob/main/README.md)
+
 <p align=center>
 <img src="https://github.com/J0aoPaulo/SpotSearch/assets/98539735/5252de87-4cd0-442f-9516-a6f25f4bde48">
 </p>
