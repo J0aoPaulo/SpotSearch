@@ -1,0 +1,4 @@
+            - name: Translate Readme Action
+  uses: ephraimduncan/translate-readme@v1
+  with:
+    LANG: en
