@@ -1,4 +1,21 @@
-            - name: Translate Readme Action
-  uses: ephraimduncan/translate-readme@v1
-  with:
-    LANG: en
+name: Translate README
+
+on:
+  push:
+    branches:
+      - main
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      # ISO Langusge Codes: https://cloud.google.com/translate/docs/languages  
+      - name: Adding README - english
+        uses: dephraiim/translate-readme@main
+        with:
+          LANG: en
