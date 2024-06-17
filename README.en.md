@@ -34,9 +34,10 @@ curl -X POST "https://accounts.spotify.com/api/token" \
 
 1.  Clone the repository and move to your root folder.
 
-
+```bash
     git clone https://github.com/J0aoPaulo/SpotSearch
     cd spotsearch
+```
 
 2.  Configure the PostgreSQL database with the following commands below:
 
