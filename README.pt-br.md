@@ -1,5 +1,10 @@
 # SpotSearch
 
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Hibernate](https://img.shields.io/badge/Hibernate-717D36?style=for-the-badge&logo=Hibernate)
+
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/J0aoPaulo/SpotSearch/blob/main/README.md)
 
 <p align=center>
