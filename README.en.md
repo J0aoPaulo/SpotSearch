@@ -1,4 +1,4 @@
-# SpotSearch
+# Spotify Search
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)![Spring](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)![Hibernate](https://img.shields.io/badge/Hibernate-717D36?style=for-the-badge&logo=Hibernate)
 
@@ -24,7 +24,7 @@ curl -X POST "https://accounts.spotify.com/api/token" \
 ```
 
 5.  Now, with the access token in hand, feel free to make data requests for an artist, album or song. 
-    See this[documentation](https://developer.spotify.com/documentation/web-api/reference/search)for more information.
+    See this[documentation](https://developer.spotify.com/documentation/web-api/reference/search) for more information.
 
 #### Attention:
 
